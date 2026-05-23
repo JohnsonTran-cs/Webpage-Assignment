@@ -4,9 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webpage Assignment</title>
+    <style>
+        form{
+            font-family: Arial;
+        }
+        label{
+            color:blue;
+            font-weight: bold;
+        }
+        #submit-button{
+            font-weight: bold;
+            background-color: darkgreen;
+            color: yellow;
+            border-radius: 5px;
+            border: 2px solid black;
+            width: 100px;
+            height: 30px;
+            
+        }
+        #req-list{
+            color:red;
+            padding-left: 0;
+            /*
+            left padding makes bullet points disappear
+            inside position pulls them back in since default is "outside"
+            */
+            list-style-position: inside;
+        }
+    </style>
 </head>
 <body>
-    <form>
+    <!--
+    methods:
+    GET: Add data to end of URL (Insecure)
+    POST: Send to backend server
+    -->
+    <form action="php_page.php" method="POST">
         <h1>Contact Form</h1>
         <div>
             <label for="name">Name</label>
@@ -27,7 +60,7 @@
         </div>
 
         <br>
-        <input type="submit">
+        <input type="submit" id="submit-button" value="SUBMIT">
         <ul id="req-list">
             <li id="name-req">Name is required.</li>
             <li id="name-address">Address is required.</li>
