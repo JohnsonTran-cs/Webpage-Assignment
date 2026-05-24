@@ -39,7 +39,7 @@
     GET: Add data to end of URL (Insecure)
     POST: Send to backend server
     -->
-    <form action="php_page.php" method="POST">
+    <form action="form.php" method="POST">
         <h1>Contact Form</h1>
         <div>
             <label for="name">Name</label>
@@ -56,7 +56,7 @@
         <div>
             <label for="zip-code">Zip Code</label>
             <br>
-            <input type="text" id="zip-code">
+            <input type="number" id="zip-code">
         </div>
 
         <br>
@@ -67,5 +67,39 @@
             <li id="name-req">Zip Code is required.</li>
         </ul>
     </form>
+    <script>
+        /*
+        Clarification Questions:
+        CSS:
+         - What does "input fields leave system default" mean?
+           - Should "Name" element have a default value such as "John Doe" if empty?
+        JS:
+         - Should Error Messages be checked live?
+           - "X is required": Flagged on Submit or on Keystroke?
+        */
+        function isValidEntry(id){
+            const element = document.getElementById(id);
+            const value = element.value;
+            // if value is empty or null, immediately return false
+            if (element.value.length === 0 || element.value === null){
+                console.log("[Empty Value Check]: Value is empty.")
+                return false;
+            }
+            // check number value
+            if (element.type === "number"){
+                // check if value is not a num
+                let result = !isNaN(parseInt(value) && isFinite(value));
+                result ? console.log("[Type Check Number]: Result is valid entry.") : console.log("[Type Check Number]: Result is not a number.");
+                return result;
+            }
+            // check text value
+            if (element.type === "text"){
+                let result = element.value.length <= 100;
+                result ? console.log("[Type Check Text]: Result is valid entry."):console.log("[Type Check Text]: Result has more than 100 characters.");
+                return result;
+            }
+
+        }
+    </script>
 </body>
 </html>
