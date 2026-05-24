@@ -39,7 +39,7 @@
     GET: Add data to end of URL (Insecure)
     POST: Send to backend server
     -->
-    <form action="form.php" method="POST">
+    <form action="form.php" method="GET">
         <h1>Contact Form</h1>
         <div>
             <label for="name">Name</label>
@@ -60,11 +60,12 @@
         </div>
 
         <br>
-        <input type="submit" id="submit-button" value="SUBMIT">
+        <!--Change type to "submit" when we need to write to php-->
+        <input type="button" id="submit-button" value="SUBMIT" onclick="checkAllValid()">
         <ul id="req-list">
-            <li id="name-req">Name is required.</li>
-            <li id="name-address">Address is required.</li>
-            <li id="name-req">Zip Code is required.</li>
+            <li id="name-req" hidden="true">Name is required.</li>
+            <li id="address-req" hidden="true">Address is required.</li>
+            <li id="zip-code-req" hidden="true">Zip Code is required.</li>
         </ul>
     </form>
     <script>
@@ -78,27 +79,48 @@
            - "X is required": Flagged on Submit or on Keystroke?
         */
         function isValidEntry(id){
+            console.log("hit valid entry function")
+            console.log(id);
             const element = document.getElementById(id);
-            const value = element.value;
+            const curr_value = element.value;
+            // ***improve*** hard coded
+            let req = document.getElementById(id+"-req");
+            console.log(element);
+            console.log(curr_value);
             // if value is empty or null, immediately return false
-            if (element.value.length === 0 || element.value === null){
+            if (curr_value.length === 0 || curr_value === null){
                 console.log("[Empty Value Check]: Value is empty.")
+                console.log(req);
+                req.hidden = false; 
                 return false;
             }
+            req.hidden = true; 
             // check number value
+            // allow 5 digit zip or 5 digit + "-" + 4 digit?
+            // regex for zip type check?
             if (element.type === "number"){
+                // Add || curr_value.length !== 10 for Zip Code + 4?
+                const isRightLength = (curr_value.length === 5);
+                isRightLength ? console.log("[Length Check]: Result is 5.") : console.log("[Length Check]: Result is not 5 digits.");
                 // check if value is not a num
-                let result = !isNaN(parseInt(value) && isFinite(value));
-                result ? console.log("[Type Check Number]: Result is valid entry.") : console.log("[Type Check Number]: Result is not a number.");
-                return result;
+                const isAllNum = !isNaN(parseInt(curr_value) && isFinite(curr_value));
+                isAllNum ? console.log("[Type Check Number]: Result is valid entry.") : console.log("[Type Check Number]: Result is not a number.");
+                return (isAllNum && isRightLength);
             }
             // check text value
+            // regex for address check?
             if (element.type === "text"){
-                let result = element.value.length <= 100;
+                const result = curr_value.length <= 100;
                 result ? console.log("[Type Check Text]: Result is valid entry."):console.log("[Type Check Text]: Result has more than 100 characters.");
                 return result;
             }
 
+        }
+        function checkAllValid(){
+            console.log("button clicked");
+            const nameValid = isValidEntry("name");
+            const addressValid = isValidEntry("address");
+            const zipCodeValid = isValidEntry("zip-code");
         }
     </script>
 </body>
