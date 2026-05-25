@@ -78,13 +78,20 @@
          - Should Error Messages be checked live?
            - "X is required": Flagged on Submit or on Keystroke?
         */
+
+        function checkAllValid(){
+            console.log("button clicked");
+            const nameValid = isValidEntry("name");
+            const addressValid = isValidEntry("address");
+            const zipCodeValid = isValidEntry("zip-code");
+        }
         function isValidEntry(id){
-            console.log("hit valid entry function")
+            //console.log("hit valid entry function")
             console.log(id);
             const element = document.getElementById(id);
             const curr_value = element.value;
             // ***improve*** hard coded
-            let req = document.getElementById(id+"-req");
+            const req = document.getElementById(id+"-req");
             console.log(element);
             console.log(curr_value);
             // if value is empty or null, immediately return false
@@ -103,7 +110,7 @@
                 const isRightLength = (curr_value.length === 5);
                 isRightLength ? console.log("[Length Check]: Result is 5.") : console.log("[Length Check]: Result is not 5 digits.");
                 // check if value is not a num
-                const isAllNum = !isNaN(parseInt(curr_value) && isFinite(curr_value));
+                const isAllNum = !isNaN(parseInt(curr_value)) && isFinite(curr_value);
                 isAllNum ? console.log("[Type Check Number]: Result is valid entry.") : console.log("[Type Check Number]: Result is not a number.");
                 return (isAllNum && isRightLength);
             }
@@ -115,12 +122,6 @@
                 return result;
             }
 
-        }
-        function checkAllValid(){
-            console.log("button clicked");
-            const nameValid = isValidEntry("name");
-            const addressValid = isValidEntry("address");
-            const zipCodeValid = isValidEntry("zip-code");
         }
     </script>
 </body>
