@@ -12,6 +12,9 @@
             color:blue;
             font-weight: bold;
         }
+        input{
+            width: 500px;
+        }
         #submit-button{
             font-weight: bold;
             background-color: darkgreen;
@@ -44,23 +47,23 @@
         <div>
             <label for="name">Name</label>
             <br>
-            <input type="text" id="name">
+            <input type="text" id="name" placeholder="John Doe">
         </div>
         <br>
         <div>
             <label for="address">Address</label>
             <br>
-            <input type="text" id="address">
+            <input type="text" id="address" placeholder="800 N. State College Blvd., Fullerton, CA" >
         </div>
         <br>
         <div>
             <label for="zip-code">Zip Code</label>
             <br>
-            <input type="number" id="zip-code">
+            <input type="number" id="zip-code" placeholder="92831" oninput="lengthIsFive(this)">
         </div>
 
         <br>
-        <!--Change type to "submit" when we need to write to php-->
+        <!--Change type to "submit" when we need to write to php and method "GET" or "POST"-->
         <input type="button" id="submit-button" value="SUBMIT" onclick="checkAllValid()">
         <ul id="req-list">
             <li id="name-req" hidden="true">Name is required.</li>
@@ -78,19 +81,34 @@
          - Should Error Messages be checked live?
            - "X is required": Flagged on Submit or on Keystroke?
         */
+        function checkAllValid(){
+            console.log("Submit button clicked");
+            const nameValid = isValidEntry("name");
+            const addressValid = isValidEntry("address");
+            const zipCodeValid = isValidEntry("zip-code");
+        }
+
         function isValidEntry(id){
-            console.log("hit valid entry function")
-            console.log(id);
+            //console.log("hit valid entry function")
+            console.log("[ID]:" + id);
             const element = document.getElementById(id);
             const curr_value = element.value;
             // ***improve*** hard coded
-            let req = document.getElementById(id+"-req");
-            console.log(element);
-            console.log(curr_value);
+            /*
+            Option 1: Create a class that creates labels and default errors
+            When we create a new label with the class, it will create a new error that comes with it
+            This way the code isn't reliant on developers following naming conventions
+            Option 2: Create an error element based on the id. add the html <li> element to  
+            id = "req-list". When the HTML initially runs, we can have a function create all the
+            needed error elements so the developers just need to add a new label and call the function
+            */
+            const req = document.getElementById(id+"-req");
+            console.log("[ELEMENT]:" + element);
+            console.log("[CURRENT ELEMENT VALUE]:" + curr_value);
             // if value is empty or null, immediately return false
             if (curr_value.length === 0 || curr_value === null){
                 console.log("[Empty Value Check]: Value is empty.")
-                console.log(req);
+                console.log("[ERROR]:" + req);
                 req.hidden = false; 
                 return false;
             }
@@ -103,7 +121,7 @@
                 const isRightLength = (curr_value.length === 5);
                 isRightLength ? console.log("[Length Check]: Result is 5.") : console.log("[Length Check]: Result is not 5 digits.");
                 // check if value is not a num
-                const isAllNum = !isNaN(parseInt(curr_value) && isFinite(curr_value));
+                const isAllNum = !isNaN(parseInt(curr_value)) && isFinite(curr_value);
                 isAllNum ? console.log("[Type Check Number]: Result is valid entry.") : console.log("[Type Check Number]: Result is not a number.");
                 return (isAllNum && isRightLength);
             }
@@ -116,12 +134,25 @@
             }
 
         }
-        function checkAllValid(){
-            console.log("button clicked");
-            const nameValid = isValidEntry("name");
-            const addressValid = isValidEntry("address");
-            const zipCodeValid = isValidEntry("zip-code");
+        function lengthIsFive(element){
+            console.log("length five hit: " + element.value);
+            if (element.value.length > 5){
+                element.value = element.value.slice(0, 5);
+                console.log("[value]" + element.value);
+            }
         }
+        function createErrorElement(id){
+            const errorElement = document.createElement("li");
+            errorElement.id = id+"-req";
+            errorElement.textContent = titleCaseElementId(id) + "is required.";
+            document.getElementById("req-list").append(errorElement);
+        }
+        function titleCaseElementId (id){
+            let phrase = id;
+            phrase = phrase.toLowerCase().split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+            return phrase;
+        };
+
     </script>
 </body>
 </html>
